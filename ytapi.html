@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>10take Wonder</title>
+    <script type='text/javascript' src='configure.js'></script>
+</head>
+<body>
+    
+    <div id="display"></div>
+
+    <script>
+        var xhr = new XMLHttpRequest();
+        
+        xhr.open('GET', 'https://www.googleapis.com/youtube/v3/search?channelId=UCerf3K_GB9ctVbFnF9WGYlA&key=' + key + '&part=snippet,id&order=date&maxResults=1', true);
+
+        xhr.onload = function(){
+            if(this.status == 200){
+                var parsedData = JSON.parse(xhr.responseText);
+                var videoObj = parsedData["items"][0];
+                console.log(parsedData);
+
+                var songDisplay = "<h1>Latest song from " + videoObj["snippet"].channelTitle + "</h1>";
+                songDisplay += "<p>" + videoObj["snippet"].title + "</p>";
+                songDisplay += "<p>" + videoObj["snippet"].description + "</p>";
+                songDisplay += "<a href='https://www.youtube.com/watch?v=" + videoObj["id"].videoId + "'>";
+                songDisplay += "<img src='" + videoObj["snippet"]["thumbnails"]["medium"].url + "' />";
+                songDisplay += "</a>";
+                
+                document.getElementById("display").innerHTML = songDisplay;
+            }
+        }
+
+        xhr.send();
+    </script>
+</body>
+</html>
